@@ -35,7 +35,7 @@ func (c *Context) Next() {
 	c.on = true
 }
 
-func newContext(w http.ResponseWriter, r *http.Request, handler HandlerFunc) *Context {
+func NewContext(w http.ResponseWriter, r *http.Request, handler HandlerFunc) *Context {
 	return &Context{
 		Writer: w,
 		Req:    r,

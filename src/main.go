@@ -9,9 +9,15 @@ import (
 func main() {
 	h := gee.New()
 
+	h.GET("/json", func(c *gee.Context) {
+		c.JSON(200, gee.H{
+			"message": "hello json",
+		})
+	})
+
 	h.GET("/", func(c *gee.Context) {
 		for k, v := range c.Req.Header {
-			fmt.Fprintf(c.W, "%s: %s\n", k, v)
+			fmt.Fprintf(c.Writer, "%s: %s\n", k, v)
 		}
 	})
 
