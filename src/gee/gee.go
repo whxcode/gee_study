@@ -3,7 +3,8 @@ package gee
 import "net/http"
 
 type GeeEngine struct {
-	router      map[string]HandlerFunc
+	router map[string]HandlerFunc
+
 	middlewares []HandlerFunc
 }
 
