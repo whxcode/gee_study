@@ -14,36 +14,28 @@ type Context struct {
 	handler     HandlerFunc
 	Path        string
 	Method      string
+	Parmas      map[string]string
+	index       int
+	middlewares []HandlerFunc
 	SetatusCode int
-
-	on bool
 }
 
 func (c *Context) Next() {
-	/*
+	c.index++
+	for c.index < len(c.middlewares) {
+		c.middlewares[c.index](c)
 		c.index++
-		for c.index < len(c.middlewares) {
-			c.middlewares[c.index](c)
-			c.index++
-		}
-	*/
-
-	if c.handler != nil && c.on {
-		c.handler(c)
 	}
-
-	c.on = true
 }
 
-func NewContext(w http.ResponseWriter, r *http.Request, handler HandlerFunc) *Context {
+func NewContext(w http.ResponseWriter, r *http.Request) *Context {
 	return &Context{
-		Writer: w,
-		Req:    r,
-		Path:   r.URL.Path,
-		Method: r.Method,
-
-		//
-		on: true,
+		Writer:      w,
+		Req:         r,
+		Path:        r.URL.Path,
+		Method:      r.Method,
+		index:       -1,
+		middlewares: []HandlerFunc{},
 	}
 }
 
@@ -78,4 +70,9 @@ func (c *Context) JSON(code int, obj interface{}) {
 	if err := encoder.Encode(obj); err != nil {
 		http.Error(c.Writer, err.Error(), http.StatusInternalServerError)
 	}
+}
+
+func (c *Context) Parma(key string) string {
+	value := c.Parmas[key]
+	return value
 }

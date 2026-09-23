@@ -10,7 +10,7 @@ import (
 )
 
 // 构造测试用的 engine
-func setupRouter() *gee.GeeEngine {
+func setupRouter() *gee.Engine {
 	r := gee.New()
 	r.GET("/json", func(c *gee.Context) {
 		c.JSON(200, gee.H{
