@@ -39,18 +39,11 @@ func (n *node) insert(pattern string, parts []string, height int) {
 	}
 
 	part := parts[height]
-
 	child := n.matchChild(part)
-
-	if child != nil {
-		child = &node{
-			part:   part,
-			isWild: part[0] == ':' || part[0] == '*',
-		}
-
+	if child == nil {
+		child = &node{part: part, isWild: part[0] == ':' || part[0] == '*'}
 		n.children = append(n.children, child)
 	}
-
 	child.insert(pattern, parts, height+1)
 }
 
@@ -67,7 +60,6 @@ func (n *node) search(parts []string, height int) *node {
 
 	for _, child := range children {
 		result := child.search(parts, height+1)
-
 		if result != nil {
 			return result
 		}
